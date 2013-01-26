@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = PVC::VERSION
   s.authors     = ["Chris Berkhout"]
   s.email       = ["chrisberkhout@gmail.com"]
-  s.homepage    = "http://chrisberkhout.com"
+  s.homepage    = "http://github.com/chrisberkhout/pvc"
   s.summary     = %q{Easy piping between processes}
 
   s.rubyforge_project = "pvc"
@@ -17,7 +17,8 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  # specify any dependencies here; for example:
+  s.add_runtime_dependency "childprocess"
+
   s.add_development_dependency "rspec"
   
   s.required_ruby_version = '>= 1.9.0'
