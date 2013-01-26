@@ -1,25 +1,5 @@
 require "childprocess"
 
-# Example usage:
-# 
-#   PVC.new.
-#     to("ls").
-#     to("sort").
-#     to do |input, output|
-#       input.each_line do |line|
-#         output.puts line
-#         puts "FIRST BLOCK SAW... #{line}"
-#       end rescue nil
-#     end.
-#     to("sort", "-r").
-#     to do |input, output|
-#       input.each_line do |line|
-#         output.puts line
-#         puts "SECOND BLOCK SAW... #{line}"
-#       end rescue nil
-#     end.run
-# 
-
 class PVC
 
   class NullBit
