@@ -9,6 +9,10 @@ class PVC
       @write
     end
 
+    def start(following=nil)
+      # do nothing
+    end
+
     def finish
       @write.close
     end
