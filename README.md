@@ -45,8 +45,14 @@ This code is packaged as a Gem. If you like, you can build and install it by run
     # Process intermediate results with Ruby - easily (built in exception handling)
     PVC.new("cat some.log").to { |io| io.each_line { |line| io.stdout.puts line if line.match(/ERROR/) } }.to("tail -n10").run
 
+    # Get all returns across a whole pipeline
+    PVC.new("ls doesnotexist").to { |io| return Foo.new }.to("true").run.returns  # => ["1\n", #<Foo:0x007fd47917a7f0>, "0\n"]
+
     # Mix stderr and stdin at some point in a pipeline
-    PVC.new("echo hello && ls doesnotexist").with_err.to("wc -l").run.stdout  # => "2\n"
+    PVC.new("echo hello && ls doesnotexist").with_err.to("wc -l").run.stdout  # => "       2\n"
+
+    # Pass on only stderr at some point in a pipeline
+    PVC.new("echo hello && ls doesnotexist").only_err.to("wc -l").run.stdout  # => "       1\n"
 
     # Insert one pipeline into another
     upcase_unique_pipeline = PVC.new("tr a-z A-Z").to("uniq")
