@@ -28,9 +28,6 @@ class PVC
   def run
     padded_bits = [NullBit.new] + @bits + [NullBit.new]
     
-    # @bits[1..-2].zip(@bits[2..-1]).reverse.each do |current, following|
-    #   current.start(following)
-    # end
     padded_bits.zip(padded_bits[1..-1]).reverse.each do |current, following|
       current.start(following)
     end

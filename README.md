@@ -14,7 +14,11 @@ This code is packaged as a Gem. If you like, you can build and install it by run
     gem build pvc.gemspec
     gem install pvc-*.gem
 
-## Synopsis
+## Synopsis - implemented
+
+    # Needs a clean up...
+
+## Synopsis - unimplemented
 
     # Run a single process
     PVC.new("echo hello").run  # => PVC::Result
