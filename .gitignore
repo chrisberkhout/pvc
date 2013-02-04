@@ -2,3 +2,5 @@
 *.sw*
 pkg/*
 *.gem
+TODO.md
+
