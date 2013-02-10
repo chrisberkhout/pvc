@@ -16,7 +16,7 @@ describe "pipe io" do
     read, write = IO.pipe
     fork_childprocess do
       write.close
-      lambda { read.read_nonblock(1) }.should raise_error(Errno::EAGAIN)  # not yet EOF
+      expect { read.read_nonblock(1) }.to raise_error(Errno::EAGAIN)  # not yet EOF
     end
   end
 
@@ -24,7 +24,7 @@ describe "pipe io" do
     read, write = IO.pipe
     fork_childprocess
     write.close
-    lambda { read.read_nonblock(1) }.should raise_error(EOFError)
+    expect { read.read_nonblock(1) }.to raise_error(EOFError)
   end
 
   it "should show EOF on close if the fork has closed its copy of the file handle (by closing on exec)" do
@@ -32,7 +32,7 @@ describe "pipe io" do
     write.close_on_exec = true
     fork_childprocess do
       write.close
-      lambda { read.read_nonblock(1) }.should raise_error(EOFError)
+      expect { read.read_nonblock(1) }.to raise_error(EOFError)
     end
   end
 
