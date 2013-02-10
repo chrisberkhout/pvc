@@ -1,4 +1,4 @@
-class PVC
+module PVC
   class NullBit
     
     def initialize

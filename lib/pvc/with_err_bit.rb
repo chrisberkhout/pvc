@@ -1,4 +1,4 @@
-class PVC
+module PVC
   class WithErrBit
 
     def initialize(&block)

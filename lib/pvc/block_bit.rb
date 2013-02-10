@@ -1,4 +1,4 @@
-class PVC
+module PVC
   class BlockBit
 
     def initialize(&block)
