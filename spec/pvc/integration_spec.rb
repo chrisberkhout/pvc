@@ -5,11 +5,11 @@ describe "pvc" do
   describe "(synopsis tests)" do
 
     it "should run a single process" do
-      PVC.new("echo hello").run.class.should == PVC::Result
+      PVC.new("echo hello").run.stdout.should == "hello\n"
     end
 
     it "should pipe from one process to another" do
-      PVC.new("echo hello").to("tr h H").run.class.should == PVC::Result
+      PVC.new("echo hello").to("tr h H").run.stdout.should == "Hello\n"
     end
 
   end

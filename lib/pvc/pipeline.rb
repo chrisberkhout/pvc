@@ -4,7 +4,7 @@ require "pvc/block_piece"
 require "pvc/null_piece"
 require "pvc/process_piece"
 require "pvc/with_err_piece"
-require "pvc/result"
+require "pvc/result_piece"
 
 module PVC
   class Pipeline
@@ -31,7 +31,7 @@ module PVC
     end
 
     def run
-      padded_pieces = [NullPiece.new] + @pieces + [NullPiece.new]
+      padded_pieces = [NullPiece.new] + @pieces + [ResultPiece.new]
       
       padded_pieces.zip(padded_pieces[1..-1]).reverse.each do |current, following|
         current.start(following)
@@ -41,7 +41,7 @@ module PVC
         current.finish
       end
 
-      Result.new
+      padded_pieces.last
     end
 
   end
