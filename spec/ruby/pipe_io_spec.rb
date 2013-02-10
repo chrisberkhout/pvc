@@ -12,6 +12,8 @@ describe "pipe io" do
     process.wait
   end
 
+  # see also the example at: http://rubydoc.info/stdlib/core/1.9.3/IO.pipe
+
   it "will not show EOF on close if a fork has an open copy of the file handle" do
     read, write = IO.pipe
     fork_childprocess do
