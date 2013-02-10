@@ -1,42 +1,47 @@
 require "childprocess"
 
-require "pvc/block_bit"
-require "pvc/null_bit"
-require "pvc/process_bit"
-require "pvc/with_err_bit"
+require "pvc/block_piece"
+require "pvc/null_piece"
+require "pvc/process_piece"
+require "pvc/with_err_piece"
+require "pvc/result"
 
 module PVC
   class Pipeline
 
-    def initialize
-      @bits = []
+    def initialize(*args, &block)
+      @pieces = []
+      if args.length > 0 || block_given?
+        self.to(*args, &block)
+      end
     end
 
     def to(*args, &block)
       if block_given?
-        @bits << BlockBit.new(&block)
+        @pieces << BlockPiece.new(&block)
       else
-        @bits << ProcessBit.new(*args)
+        @pieces << ProcessPiece.new(*args)
       end
       self
     end
 
     def with_err
-      @bits << WithErrBit.new
+      @pieces << WithErrPiece.new
       self
     end
 
     def run
-      padded_bits = [NullBit.new] + @bits + [NullBit.new]
+      padded_pieces = [NullPiece.new] + @pieces + [NullPiece.new]
       
-      padded_bits.zip(padded_bits[1..-1]).reverse.each do |current, following|
+      padded_pieces.zip(padded_pieces[1..-1]).reverse.each do |current, following|
         current.start(following)
       end
 
-      padded_bits.each do |current|
+      padded_pieces.each do |current|
         current.finish
       end
 
+      Result.new
     end
 
   end

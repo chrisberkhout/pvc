@@ -1,5 +1,5 @@
 module PVC
-  class ProcessBit
+  class ProcessPiece
 
     def initialize(*args)
       @args = args
@@ -10,10 +10,10 @@ module PVC
       @process.io.stdin
     end
 
-    def start(following_bit)
+    def start(following_piece)
       @process.duplex = true
-      @process.io.stdout = following_bit.stdin
-      @process.io.stderr = following_bit.errin if following_bit.respond_to?(:errin)
+      @process.io.stdout = following_piece.stdin
+      @process.io.stderr = following_piece.errin if following_piece.respond_to?(:errin)
       @process.start
     end
 

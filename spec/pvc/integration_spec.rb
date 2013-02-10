@@ -4,6 +4,11 @@ describe "pvc" do
 
   let(:log) { [] }
 
+
+  it "should run a single process" do
+    PVC.new("echo hello").run.class.should == PVC::Result
+  end
+
   it "should work with 2 shell commands and a block" do
     PVC.new.
       to("echo BBB && echo AAA").

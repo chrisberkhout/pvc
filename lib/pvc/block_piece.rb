@@ -1,5 +1,5 @@
 module PVC
-  class BlockBit
+  class BlockPiece
 
     def initialize(&block)
       @block = block
@@ -12,9 +12,9 @@ module PVC
       @write
     end
 
-    def start(following_bit)
+    def start(following_piece)
       @thread = Thread.new do
-        @block.call(@read, following_bit.stdin)
+        @block.call(@read, following_piece.stdin)
       end
     end
 

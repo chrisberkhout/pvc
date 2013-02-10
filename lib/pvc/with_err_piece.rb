@@ -1,5 +1,5 @@
 module PVC
-  class WithErrBit
+  class WithErrPiece
 
     def initialize(&block)
       @block = block
@@ -19,12 +19,12 @@ module PVC
       @errwrite
     end
 
-    def start(following_bit)
+    def start(following_piece)
       @stdthread = Thread.new do
-        @stdread.each_line { |line| following_bit.stdin.puts line }
+        @stdread.each_line { |line| following_piece.stdin.puts line }
       end
       @errthread = Thread.new do
-        @errread.each_line { |line| following_bit.stdin.puts line }
+        @errread.each_line { |line| following_piece.stdin.puts line }
       end
     end
 

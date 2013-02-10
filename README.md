@@ -16,12 +16,10 @@ This code is packaged as a Gem. If you like, you can build and install it by run
 
 ## Synopsis - implemented
 
-    # Needs a clean up...
-
-## Synopsis - unimplemented
-
     # Run a single process
     PVC.new("echo hello").run  # => PVC::Result
+
+## Synopsis - unimplemented
 
     # Or pipe from one process to another
     PVC.new("echo hello").to("tr h H").run  # => PVC::Result

@@ -1,5 +1,5 @@
 module PVC
-  class NullBit
+  class NullPiece
     
     def initialize
       @read, @write = IO.pipe
