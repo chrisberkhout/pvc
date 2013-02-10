@@ -48,11 +48,11 @@ module PVC
     end
 
     def stderr
-      @stdout.join("")
+      @stderr.join("")
     end
 
     def stdboth
-      @stdout.join("")
+      @stdboth.join("")
     end
 
   end

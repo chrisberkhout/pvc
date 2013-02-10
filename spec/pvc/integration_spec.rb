@@ -12,6 +12,18 @@ describe "pvc" do
       PVC.new("echo hello").to("tr h H").run.stdout.should == "Hello\n"
     end
 
+    it "should let you get stdout" do
+      PVC.new("echo hello && ls doesnotexist").run.stdout.should == "hello\n"
+    end
+
+    it "should let you get stderr" do
+      PVC.new("echo hello && ls doesnotexist").run.stderr.should == "ls: doesnotexist: No such file or directory\n"
+    end
+
+    it "should let you get stdout and stderr together" do
+      PVC.new("echo hello && ls doesnotexist").run.stdboth.should == "hello\nls: doesnotexist: No such file or directory\n"
+    end
+
   end
 
   describe "(original manual tests)" do

@@ -17,17 +17,19 @@ This code is packaged as a Gem. If you like, you can build and install it by run
 ## Synopsis - implemented
 
     # Run a single process
-    PVC.new("echo hello").run  # => PVC::Result
+    PVC.new("echo hello").run
 
     # Or pipe from one process to another
-    PVC.new("echo hello").to("tr h H").run  # => PVC::Result
-
-## Synopsis - unimplemented
+    PVC.new("echo hello").to("tr h H").run
 
     # Get individual or several outputs from the final result
     PVC.new("echo hello && ls doesnotexist").run.stdout   # => "hello\n"
     PVC.new("echo hello && ls doesnotexist").run.stderr   # => "ls: doesnotexist: No such file or directory\n"
     PVC.new("echo hello && ls doesnotexist").run.stdboth  # => "hello\nls: doesnotexist: No such file or directory\n"
+
+## Synopsis - unimplemented
+
+    # Get individual or several outputs from the final result
     PVC.new("echo hello && ls doesnotexist").run.code     # => 1
     stderr, code = PVC.new("echo hello && ls doesnotexist").run.get(:stderr, :code)  # => ["ls: doesnotexist: No such file or directory\n", 1]
 
