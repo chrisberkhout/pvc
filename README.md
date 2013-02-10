@@ -19,10 +19,10 @@ This code is packaged as a Gem. If you like, you can build and install it by run
     # Run a single process
     PVC.new("echo hello").run  # => PVC::Result
 
-## Synopsis - unimplemented
-
     # Or pipe from one process to another
     PVC.new("echo hello").to("tr h H").run  # => PVC::Result
+
+## Synopsis - unimplemented
 
     # Get individual or several outputs from the final result
     PVC.new("echo hello && ls doesnotexist").run.stdout   # => "hello\n"
