@@ -43,7 +43,7 @@ This code is packaged as a Gem. If you like, you can build and install it by run
     PVC.new("ls").to do |io|
       io.raw.stdin.each_line do |line|
         io.raw.stdout.puts line if line.match(/ERROR/)
-      end rescue nil
+      end
     end.run
 
     # Process intermediate results with Ruby - easily (built in exception handling)

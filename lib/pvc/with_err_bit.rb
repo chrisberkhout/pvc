@@ -5,6 +5,10 @@ module PVC
       @block = block
       @stdread, @stdwrite = IO.pipe
       @errread, @errwrite = IO.pipe
+      @stdread.close_on_exec = true
+      @stdread.close_on_exec = true
+      @errwrite.close_on_exec = true
+      @errwrite.close_on_exec = true
     end
 
     def stdin
@@ -17,22 +21,16 @@ module PVC
 
     def start(following_bit)
       @stdthread = Thread.new do
-        @stdread.each_line do |line|
-          following_bit.stdin.puts line
-        end rescue nil
+        @stdread.each_line { |line| following_bit.stdin.puts line }
       end
       @errthread = Thread.new do
-        @errread.each_line do |line|
-          following_bit.stdin.puts line
-        end rescue nil
+        @errread.each_line { |line| following_bit.stdin.puts line }
       end
     end
 
     def finish
       @stdwrite.close
       @errwrite.close
-      @stdread.close
-      @errread.close
       @stdthread.join
       @errthread.join
     end

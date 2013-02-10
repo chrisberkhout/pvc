@@ -4,6 +4,8 @@ module PVC
     def initialize(&block)
       @block = block
       @read, @write = IO.pipe
+      @read.close_on_exec = true
+      @write.close_on_exec = true
     end
 
     def stdin
@@ -18,7 +20,6 @@ module PVC
 
     def finish
       @write.close
-      @read.close
       @thread.join
     end
 

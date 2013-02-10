@@ -3,6 +3,8 @@ module PVC
     
     def initialize
       @read, @write = IO.pipe
+      @read.close_on_exec = true
+      @write.close_on_exec = true
     end
 
     def stdin
