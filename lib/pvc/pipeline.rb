@@ -22,6 +22,8 @@ module PVC
     def to(*args, &block)
       if block_given?
         @pieces << BlockPiece.new(&block)
+      elsif args.length == 1 && args.first.respond_to?(:pieces)
+        args.first.pieces.each { |piece| @pieces << piece }
       else
         @pieces << ProcessPiece.new(*args)
       end
@@ -62,6 +64,10 @@ module PVC
         :returns => runners.inject([]) { |returns, runner| returns << runner.return if runner.respond_to?(:return); returns }
       )
     end
+
+    protected
+
+    attr_reader :pieces
 
   end
 end

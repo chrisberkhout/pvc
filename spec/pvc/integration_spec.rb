@@ -51,6 +51,12 @@ describe "pvc" do
       PVC.new("echo hello && ls doesnotexist").only_err.to("wc -l").run.stdout.should == "       1\n"
     end
 
+    it "should let you insert one pipeline into another" do
+      upcase_unique_pipeline = PVC.new("tr a-z A-Z").to("uniq")
+      string = "hello\nHeLlO\nworld\nWoRlD\n"
+      PVC.new.input(string).to(upcase_unique_pipeline).to("sort -r").run.stdout.should == "WORLD\nHELLO\n"
+    end
+
   end
 
   describe "(original manual tests)" do

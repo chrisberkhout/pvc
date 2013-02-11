@@ -38,8 +38,6 @@ This code is packaged as a Gem. If you like, you can build and install it by run
     # Mix stderr and stdin at some point in a pipeline
     PVC.new("echo hello && ls doesnotexist").with_err.to("wc -l").run.stdout  # => "       2\n"
 
-## Synopsis - unimplemented
-
     # Pass on only stderr at some point in a pipeline
     PVC.new("echo hello && ls doesnotexist").only_err.to("wc -l").run.stdout  # => "       1\n"
 
@@ -47,11 +45,10 @@ This code is packaged as a Gem. If you like, you can build and install it by run
     upcase_unique_pipeline = PVC.new("tr a-z A-Z").to("uniq")
     PVC.new.input("hello\nHeLlO\nworld\nWoRlD\n").to(upcase_unique_pipeline).to("sort -r").run.stdout # => "WORLD\nHELLO"
 
+## Synopsis - unimplemented
+
     # Kill run if it does not finish in time (miliseconds)
     PVC.new("sleep 2").run(:timeout => 1000)
-
-    # Get all returns across a whole pipeline
-    PVC.new("ls doesnotexist").to { |io| return Foo.new }.to("true").run.returns  # => ["1\n", #<Foo:0x007fd47917a7f0>, "0\n"]
 
 ## Compatibility
 
