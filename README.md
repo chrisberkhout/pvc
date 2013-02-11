@@ -17,38 +17,38 @@ This code is packaged as a Gem. If you like, you can build and install it by run
 ## Synopsis - implemented
 
     # Run a single process
-    PVC.new("echo hello").run
+    PVC.new("echo", "hello").run
 
     # Or pipe from one process to another
-    PVC.new("echo hello").to("tr h H").run
+    PVC.new("echo", "hello").to(*%w{tr h H}).run
 
     # Get individual or several outputs from the final result
-    PVC.new("echo hello && ls doesnotexist").run.stdout   # => "hello\n"
-    PVC.new("echo hello && ls doesnotexist").run.stderr   # => "ls: doesnotexist: No such file or directory\n"
-    PVC.new("echo hello && ls doesnotexist").run.stdboth  # => "hello\nls: doesnotexist: No such file or directory\n"
-    PVC.new("echo hello && ls doesnotexist").run.code     # => 1
-    stderr, code = PVC.new("echo hello && ls doesnotexist").run.get(:stderr, :code)  # => ["ls: doesnotexist: No such file or directory\n", 1]
+    PVC.new("bash", "-c", "echo hello && ls doesnotexist").run.stdout   # => "hello\n"
+    PVC.new("bash", "-c", "echo hello && ls doesnotexist").run.stderr   # => "ls: doesnotexist: No such file or directory\n"
+    PVC.new("bash", "-c", "echo hello && ls doesnotexist").run.stdboth  # => "hello\nls: doesnotexist: No such file or directory\n"
+    PVC.new("bash", "-c", "echo hello && ls doesnotexist").run.code     # => 1
+    stderr, code = PVC.new("bash", "-c", "echo hello && ls doesnotexist").run.get(:stderr, :code)  # => ["ls: doesnotexist: No such file or directory\n", 1]
 
     # Input a string into stdin
-    PVC.new.input("one\ntwo\nthree\n").to("sort -r").run.stdout  # => "two\nthree\none\n"
+    PVC.new.input("one\ntwo\nthree\n").to("sort", "-r").run.stdout  # => "two\nthree\none\n"
 
     # Process intermediate results with Ruby
-    PVC.new("cat some.log").to { |i,o| i.each_line { |line| o.puts line if line.match(/ERROR/) } }.to("tail -n10").run
+    PVC.new("cat", "some.log").to { |i,o| i.each_line { |line| o.puts line if line.match(/ERROR/) } }.to("tail", "-n10").run
 
     # Mix stderr and stdin at some point in a pipeline
-    PVC.new("echo hello && ls doesnotexist").with_err.to("wc -l").run.stdout  # => "       2\n"
+    PVC.new("bash", "-c", "echo hello && ls doesnotexist").with_err.to("wc", "-l").run.stdout  # => "       2\n"
 
     # Pass on only stderr at some point in a pipeline
-    PVC.new("echo hello && ls doesnotexist").only_err.to("wc -l").run.stdout  # => "       1\n"
+    PVC.new("bash", "-c", "echo hello && ls doesnotexist").only_err.to("wc", "-l").run.stdout  # => "       1\n"
 
     # Insert one pipeline into another
-    upcase_unique_pipeline = PVC.new("tr a-z A-Z").to("uniq")
-    PVC.new.input("hello\nHeLlO\nworld\nWoRlD\n").to(upcase_unique_pipeline).to("sort -r").run.stdout # => "WORLD\nHELLO"
+    upcase_unique_pipeline = PVC.new("tr", "a-z", "A-Z").to("uniq")
+    PVC.new.input("hello\nHeLlO\nworld\nWoRlD\n").to(upcase_unique_pipeline).to("sort", "-r").run.stdout # => "WORLD\nHELLO"
 
 ## Synopsis - unimplemented
 
     # Kill run if it does not finish in time (miliseconds)
-    PVC.new("sleep 2").run(:timeout => 1000)
+    PVC.new("sleep", "2").run(:timeout => 1000)
 
 ## Compatibility
 

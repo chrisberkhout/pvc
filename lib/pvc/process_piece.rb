@@ -28,12 +28,12 @@ module PVC
       end
     end
 
-    def initialize(args)
+    def initialize(*args)
       @args = args
     end
 
     def runner
-      Runner.new(@args)
+      Runner.new(*@args)
     end
 
   end
