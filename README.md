@@ -35,10 +35,10 @@ This code is packaged as a Gem. If you like, you can build and install it by run
     # Process intermediate results with Ruby
     PVC.new("cat some.log").to { |i,o| i.each_line { |line| o.puts line if line.match(/ERROR/) } }.to("tail -n10").run
 
-## Synopsis - unimplemented
-
     # Mix stderr and stdin at some point in a pipeline
     PVC.new("echo hello && ls doesnotexist").with_err.to("wc -l").run.stdout  # => "       2\n"
+
+## Synopsis - unimplemented
 
     # Pass on only stderr at some point in a pipeline
     PVC.new("echo hello && ls doesnotexist").only_err.to("wc -l").run.stdout  # => "       1\n"

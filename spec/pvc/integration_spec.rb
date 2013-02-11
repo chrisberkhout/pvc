@@ -43,6 +43,10 @@ describe "pvc" do
       end.to("cat").run.stdout.should == "two\nthree\n"
     end
 
+    it "should let you mix stderr and stdin at some point in a pipeline" do
+      PVC.new("echo hello && ls doesnotexist").with_err.to("wc -l").run.stdout.should == "       2\n"
+    end
+
   end
 
   describe "(original manual tests)" do
