@@ -24,6 +24,7 @@ module PVC
       def finish
         @write.close
         @thread.join
+        @read.close
       end
 
       attr_reader :return

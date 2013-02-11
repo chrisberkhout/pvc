@@ -4,6 +4,7 @@ require "pvc/block_piece"
 require "pvc/null_piece"
 require "pvc/process_piece"
 require "pvc/with_err_piece"
+require "pvc/only_err_piece"
 require "pvc/result_piece"
 require "pvc/input_piece"
 require "pvc/result"
@@ -34,6 +35,11 @@ module PVC
     
     def with_err
       @pieces << WithErrPiece.new
+      self
+    end
+
+    def only_err
+      @pieces << OnlyErrPiece.new
       self
     end
 

@@ -1,5 +1,5 @@
 module PVC
-  class WithErrPiece
+  class OnlyErrPiece
 
     class Runner
       def initialize
@@ -20,9 +20,6 @@ module PVC
       end
 
       def start(following_piece)
-        @stdthread = Thread.new do
-          @stdread.each_line { |line| following_piece.stdin.puts line }
-        end
         @errthread = Thread.new do
           @errread.each_line { |line| following_piece.stdin.puts line }
         end
@@ -31,7 +28,6 @@ module PVC
       def finish
         @stdwrite.close
         @errwrite.close
-        @stdthread.join
         @errthread.join
         @stdread.close
         @errread.close

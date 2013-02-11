@@ -47,6 +47,10 @@ describe "pvc" do
       PVC.new("echo hello && ls doesnotexist").with_err.to("wc -l").run.stdout.should == "       2\n"
     end
 
+    it "should let you pass on only stderr at some point in a pipeline" do
+      PVC.new("echo hello && ls doesnotexist").only_err.to("wc -l").run.stdout.should == "       1\n"
+    end
+
   end
 
   describe "(original manual tests)" do

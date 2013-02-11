@@ -42,6 +42,8 @@ module PVC
         @errwrite.close
         @stdthread.join
         @errthread.join
+        @stdread.close
+        @errread.close
       end
 
       def stdout
