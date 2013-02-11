@@ -24,6 +24,15 @@ describe "pvc" do
       PVC.new("echo hello && ls doesnotexist").run.stdboth.should == "hello\nls: doesnotexist: No such file or directory\n"
     end
 
+    it "should let you get the exit code of the last process" do
+      PVC.new("echo hello").run.code.should == 0
+      PVC.new("echo hello && ls doesnotexist").run.code.should == 1
+    end
+
+    it "should let you get several outputs from the final result" do
+      PVC.new("echo hello && ls doesnotexist").run.get(:stderr, :code).should == ["ls: doesnotexist: No such file or directory\n", 1]
+    end
+
   end
 
   describe "(original manual tests)" do

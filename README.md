@@ -26,12 +26,10 @@ This code is packaged as a Gem. If you like, you can build and install it by run
     PVC.new("echo hello && ls doesnotexist").run.stdout   # => "hello\n"
     PVC.new("echo hello && ls doesnotexist").run.stderr   # => "ls: doesnotexist: No such file or directory\n"
     PVC.new("echo hello && ls doesnotexist").run.stdboth  # => "hello\nls: doesnotexist: No such file or directory\n"
-
-## Synopsis - unimplemented
-
-    # Get individual or several outputs from the final result
     PVC.new("echo hello && ls doesnotexist").run.code     # => 1
     stderr, code = PVC.new("echo hello && ls doesnotexist").run.get(:stderr, :code)  # => ["ls: doesnotexist: No such file or directory\n", 1]
+
+## Synopsis - unimplemented
 
     # Feed into stdin
     PVC.new.push("one\ntwo\nthree\n").to("sort -r").run.stdout  # => "two\nthree\none\n"

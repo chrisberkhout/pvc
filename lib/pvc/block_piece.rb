@@ -2,6 +2,7 @@ module PVC
   class BlockPiece
 
     class Runner
+
       def initialize(&block)
         @block = block
         @read, @write = IO.pipe
@@ -14,8 +15,9 @@ module PVC
       end
 
       def start(following_piece)
+        @return = nil
         @thread = Thread.new do
-          @block.call(@read, following_piece.stdin)
+          @return = @block.call(@read, following_piece.stdin)
         end
       end
 
@@ -23,6 +25,8 @@ module PVC
         @write.close
         @thread.join
       end
+
+      attr_reader :return
     end
 
     def initialize(&block)

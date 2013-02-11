@@ -5,6 +5,7 @@ require "pvc/null_piece"
 require "pvc/process_piece"
 require "pvc/with_err_piece"
 require "pvc/result_piece"
+require "pvc/result"
 
 module PVC
   class Pipeline
@@ -41,7 +42,13 @@ module PVC
         current.finish
       end
 
-      runners.last
+      Result.new(
+        :stdout => runners.last.stdout,
+        :stderr => runners.last.stderr,
+        :stdboth => runners.last.stdboth,
+        :codes => runners.inject([]) { |codes, runner| codes << runner.code if runner.respond_to?(:code); codes },
+        :returns => runners.inject([]) { |returns, runner| returns << runner.return if runner.respond_to?(:return); returns }
+      )
     end
 
   end

@@ -34,6 +34,7 @@ module PVC
         @stdthread.join
         @errthread.join
       end
+
     end
 
     def runner

@@ -22,6 +22,10 @@ module PVC
         @process.io.stdin.close
         @process.wait
       end
+
+      def code
+        @process.exit_code
+      end
     end
 
     def initialize(args)

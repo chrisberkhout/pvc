@@ -19,6 +19,7 @@ module PVC
       def finish
         @write.close
       end
+
     end
     
     def runner
