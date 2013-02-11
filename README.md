@@ -32,10 +32,10 @@ This code is packaged as a Gem. If you like, you can build and install it by run
     # Input a string into stdin
     PVC.new.input("one\ntwo\nthree\n").to("sort -r").run.stdout  # => "two\nthree\none\n"
 
-## Synopsis - unimplemented
-
     # Process intermediate results with Ruby
-    PVC.new("cat some.log").to { |in,out| in.each_line { |line| out.puts line if line.match(/ERROR/) } }.to("tail -n10").run
+    PVC.new("cat some.log").to { |i,o| i.each_line { |line| o.puts line if line.match(/ERROR/) } }.to("tail -n10").run
+
+## Synopsis - unimplemented
 
     # Mix stderr and stdin at some point in a pipeline
     PVC.new("echo hello && ls doesnotexist").with_err.to("wc -l").run.stdout  # => "       2\n"

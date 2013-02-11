@@ -37,6 +37,12 @@ describe "pvc" do
       PVC.new.input("one\ntwo\nthree\n").to("sort -r").run.stdout.should == "two\nthree\none\n"
     end
 
+    it "should let you process intermediate results with Ruby" do
+      PVC.new.input("one\ntwo\nthree\n").to do |i,o|
+        i.each_line { |line| o.puts line if line.match(/^t/) }
+      end.to("cat").run.stdout.should == "two\nthree\n"
+    end
+
   end
 
   describe "(original manual tests)" do
