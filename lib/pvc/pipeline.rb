@@ -5,6 +5,7 @@ require "pvc/null_piece"
 require "pvc/process_piece"
 require "pvc/with_err_piece"
 require "pvc/result_piece"
+require "pvc/input_piece"
 require "pvc/result"
 
 module PVC
@@ -26,6 +27,11 @@ module PVC
       self
     end
 
+    def input(input)
+      @pieces << InputPiece.new(input)
+      self
+    end
+    
     def with_err
       @pieces << WithErrPiece.new
       self

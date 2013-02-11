@@ -29,10 +29,10 @@ This code is packaged as a Gem. If you like, you can build and install it by run
     PVC.new("echo hello && ls doesnotexist").run.code     # => 1
     stderr, code = PVC.new("echo hello && ls doesnotexist").run.get(:stderr, :code)  # => ["ls: doesnotexist: No such file or directory\n", 1]
 
-## Synopsis - unimplemented
+    # Input a string into stdin
+    PVC.new.input("one\ntwo\nthree\n").to("sort -r").run.stdout  # => "two\nthree\none\n"
 
-    # Feed into stdin
-    PVC.new.push("one\ntwo\nthree\n").to("sort -r").run.stdout  # => "two\nthree\none\n"
+## Synopsis - unimplemented
 
     # Process intermediate results with Ruby
     PVC.new("cat some.log").to { |in,out| in.each_line { |line| out.puts line if line.match(/ERROR/) } }.to("tail -n10").run
@@ -45,7 +45,7 @@ This code is packaged as a Gem. If you like, you can build and install it by run
 
     # Insert one pipeline into another
     upcase_unique_pipeline = PVC.new("tr a-z A-Z").to("uniq")
-    PVC.new.push("hello\nHeLlO\nworld\nWoRlD\n").to(upcase_unique_pipeline).to("sort -r").run.stdout # => "WORLD\nHELLO"
+    PVC.new.input("hello\nHeLlO\nworld\nWoRlD\n").to(upcase_unique_pipeline).to("sort -r").run.stdout # => "WORLD\nHELLO"
 
     # Kill run if it does not finish in time (miliseconds)
     PVC.new("sleep 2").run(:timeout => 1000)

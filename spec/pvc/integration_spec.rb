@@ -33,6 +33,10 @@ describe "pvc" do
       PVC.new("echo hello && ls doesnotexist").run.get(:stderr, :code).should == ["ls: doesnotexist: No such file or directory\n", 1]
     end
 
+    it "should let you input into the stdin" do
+      PVC.new.input("one\ntwo\nthree\n").to("sort -r").run.stdout.should == "two\nthree\none\n"
+    end
+
   end
 
   describe "(original manual tests)" do
