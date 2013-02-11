@@ -31,17 +31,17 @@ module PVC
     end
 
     def run
-      padded_pieces = [NullPiece.new] + @pieces + [ResultPiece.new]
+      runners = ([NullPiece.new] + @pieces + [ResultPiece.new]).map(&:runner)
       
-      padded_pieces.zip(padded_pieces[1..-1]).reverse.each do |current, following|
+      runners.zip(runners[1..-1]).reverse.each do |current, following|
         current.start(following)
       end
 
-      padded_pieces.each do |current|
+      runners.each do |current|
         current.finish
       end
 
-      padded_pieces.last
+      runners.last
     end
 
   end
