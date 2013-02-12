@@ -57,6 +57,10 @@ describe "pvc" do
       PVC.new.input(string).to(upcase_unique_pipeline).to("sort", "-r").run.stdout.should == "WORLD\nHELLO\n"
     end
 
+    it "should have a shorthand method for processing each line with a block" do
+      PVC.new.input("hello\nworld").lines_map { |l| l.upcase }.run.stdout.should == "HELLO\nWORLD"
+    end
+
   end
 
   describe "(original manual tests)" do
