@@ -1,10 +1,11 @@
 module PVC
-  class LinesMapPiece
+  class LinesPiece
 
     class Runner
 
-      def initialize(block)
+      def initialize(block, opts)
         @block = block
+        @mode = opts[:mode]
         @read, @write = IO.pipe
         @read.close_on_exec = true
         @write.close_on_exec = true
@@ -18,7 +19,12 @@ module PVC
         @return = nil
         @thread = Thread.new do
           @read.each_line do |line|
-            following_piece.stdin.write @block.call(line)
+            new_line = @block.call(line)
+            following_piece.stdin.write case @mode
+              when :map then new_line
+              when :tap then line
+              else raise "wrong mode"
+            end
           end
         end
       end
@@ -31,12 +37,13 @@ module PVC
 
     end
 
-    def initialize(block)
+    def initialize(block, opts)
       @block = block
+      @mode = opts[:mode]
     end
 
     def runner
-      Runner.new(@block)
+      Runner.new(@block, :mode => @mode)
     end
 
   end

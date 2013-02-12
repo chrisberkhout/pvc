@@ -7,7 +7,7 @@ require "pvc/with_err_piece"
 require "pvc/only_err_piece"
 require "pvc/result_piece"
 require "pvc/input_piece"
-require "pvc/lines_map_piece"
+require "pvc/lines_piece"
 require "pvc/result"
 
 module PVC
@@ -47,7 +47,12 @@ module PVC
     end
 
     def lines_map(&block)
-      @pieces << LinesMapPiece.new(block)
+      @pieces << LinesPiece.new(block, :mode => :map)
+      self
+    end
+
+    def lines_tap(&block)
+      @pieces << LinesPiece.new(block, :mode => :tap)
       self
     end
 

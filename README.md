@@ -45,6 +45,15 @@ This code is packaged as a Gem. If you like, you can build and install it by run
     upcase_unique_pipeline = PVC.new("tr", "a-z", "A-Z").to("uniq")
     PVC.new.input("hello\nHeLlO\nworld\nWoRlD\n").to(upcase_unique_pipeline).to("sort", "-r").run.stdout # => "WORLD\nHELLO"
 
+    # Shorthand for linewise rewriting
+    PVC.new.input("hello\nworld").lines_map { |l| l.upcase }.run.stdout "HELLO\nWORLD"
+
+    # Shorthand for linewise processing (without modifying the stream)
+    count = 0
+    result = PVC.new.input("hello\nworld").lines_tap { |l| count += 1 }.run
+    count  # => 2
+    result.stdout  # => "hello\nworld"
+
 ## Synopsis - unimplemented
 
     # Kill run if it does not finish in time (miliseconds)

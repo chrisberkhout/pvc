@@ -61,6 +61,12 @@ describe "pvc" do
       PVC.new.input("hello\nworld").lines_map { |l| l.upcase }.run.stdout.should == "HELLO\nWORLD"
     end
 
+    it "should have a shorthand for linewise processing (without modifying the stream)" do
+      count = 0
+      PVC.new.input("hello\nworld").lines_tap { |l| count += 1 }.run.stdout.should == "hello\nworld"
+      count.should == 2
+    end
+
   end
 
   describe "(original manual tests)" do
