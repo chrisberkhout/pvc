@@ -1,15 +1,20 @@
 # PVC
 
-Pipe between processes as easily as in the shell
+Pipe between processes as easily as in the shell (currently only on platforms with `IO.pipe`).
 
-## Check it out
+## Install it
 
-    # run the specs
+    gem install pvc
+
+## Check out the code
+
+    git clone git://github.com/chrisberkhout/pvc.git && pvc
+    bundle install
     bundle exec rspec spec
 
-## Install it as a RubyGem
+## Build the RubyGem yourself
 
-This code is packaged as a Gem. If you like, you can build and install it by running:
+If you like, you can build and install it by running:
 
     gem build pvc.gemspec
     gem install pvc-*.gem
