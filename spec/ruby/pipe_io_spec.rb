@@ -14,11 +14,25 @@ describe "pipe io" do
 
   # see also the example at: http://rubydoc.info/stdlib/core/1.9.3/IO.pipe
 
-  it "will not show EOF on close if a fork has an open copy of the file handle" do
-    read, write = IO.pipe
-    fork_childprocess do
-      write.close
-      expect { read.read_nonblock(1) }.to raise_error(Errno::EAGAIN)  # not yet EOF
+  context "on ruby 1.9.3" do
+    before(:each) { pending "run on ruby 1.9.3" unless RUBY_VERSION == "1.9.3" }
+    it "will not show EOF on close if a fork has an open copy of the file handle" do
+      read, write = IO.pipe
+      fork_childprocess do
+        write.close
+        expect { read.read_nonblock(1) }.to raise_error(Errno::EAGAIN)  # not yet EOF
+      end
+    end
+  end
+
+  context "on ruby >= 2.1.1" do
+    before(:each) { pending "run on ruby >= 2.1.1" unless RUBY_VERSION >= "2.1.1" }
+    it "will show EOF on close even if a fork has an open copy of the file handle" do
+      read, write = IO.pipe
+      fork_childprocess do
+        write.close
+        expect { read.read_nonblock(1) }.to raise_error(EOFError)  # this is nicer
+      end
     end
   end
 

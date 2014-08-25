@@ -23,7 +23,7 @@ module PVC
     def to(*args, &block)
       if block_given?
         @pieces << BlockPiece.new(&block)
-      elsif args.length == 1 && args.first.respond_to?(:pieces)
+      elsif args.length == 1 && args.first.respond_to?(:pieces, true)
         args.first.pieces.each { |piece| @pieces << piece }
       else
         @pieces << ProcessPiece.new(*args)
@@ -35,7 +35,7 @@ module PVC
       @pieces << InputPiece.new(input)
       self
     end
-    
+
     def with_err
       @pieces << WithErrPiece.new
       self
@@ -58,7 +58,7 @@ module PVC
 
     def run
       runners = ([NullPiece.new] + @pieces + [ResultPiece.new]).map(&:runner)
-      
+
       runners.zip(runners[1..-1]).reverse.each do |current, following|
         current.start(following)
       end

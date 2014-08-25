@@ -17,20 +17,22 @@ describe "pvc" do
     end
 
     it "should let you get stderr" do
-      PVC.new("bash", "-c", "echo hello && ls doesnotexist").run.stderr.should == "ls: doesnotexist: No such file or directory\n"
+      PVC.new("bash", "-c", "echo hello && ls doesnotexist").run.stderr.should =~ /ls:( cannot access)? doesnotexist: No such file or directory\n/
     end
 
     it "should let you get stdout and stderr together" do
-      PVC.new("bash", "-c", "echo hello && ls doesnotexist").run.stdboth.should == "hello\nls: doesnotexist: No such file or directory\n"
+      PVC.new("bash", "-c", "echo hello && ls doesnotexist").run.stdboth.should =~ /hello\nls:( cannot access)? doesnotexist: No such file or directory\n/
     end
 
     it "should let you get the exit code of the last process" do
       PVC.new("echo", "hello").run.code.should == 0
-      PVC.new("bash", "-c", "echo hello && ls doesnotexist").run.code.should == 1
+      PVC.new("bash", "-c", "echo hello && ls doesnotexist").run.code.should >= 1
     end
 
     it "should let you get several outputs from the final result" do
-      PVC.new("bash", "-c", "echo hello && ls doesnotexist").run.get(:stderr, :code).should == ["ls: doesnotexist: No such file or directory\n", 1]
+      result = PVC.new("bash", "-c", "echo hello && ls doesnotexist").run.get(:stderr, :code)
+      result[0].should =~ /ls:( cannot access)? doesnotexist: No such file or directory\n/
+      result[1].should >= 1
     end
 
     it "should let you input into the stdin" do
@@ -44,11 +46,11 @@ describe "pvc" do
     end
 
     it "should let you mix stderr and stdin at some point in a pipeline" do
-      PVC.new("bash", "-c", "echo hello && ls doesnotexist").with_err.to("wc", "-l").run.stdout.should == "       2\n"
+      PVC.new("bash", "-c", "echo hello && ls doesnotexist").with_err.to("wc", "-l").run.stdout.should =~ / *2\n/
     end
 
     it "should let you pass on only stderr at some point in a pipeline" do
-      PVC.new("bash", "-c", "echo hello && ls doesnotexist").only_err.to("wc", "-l").run.stdout.should == "       1\n"
+      PVC.new("bash", "-c", "echo hello && ls doesnotexist").only_err.to("wc", "-l").run.stdout.should =~ / *1\n/
     end
 
     it "should let you insert one pipeline into another" do

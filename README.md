@@ -66,7 +66,7 @@ If you like, you can build and install it by running:
 
 ## Compatibility
 
-Written and tested with Ruby 1.9.3.
+Tested on Ruby 1.9.3 and 2.1.1.
 
 ## Copyright
 
